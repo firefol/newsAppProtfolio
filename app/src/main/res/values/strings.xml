@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">l-tehapplication</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="item2">load</string>
+
+    <string-array name="sort_array">
+        <item>По умолчанию</item>
+        <item>По дате</item>
+    </string-array>
+</resources>
