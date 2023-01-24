@@ -15,11 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.l_tehapplication.NewsActionListener
-import com.example.l_tehapplication.NewsAdapter
+import com.example.l_tehapplication.utils.NewsActionListener
+import com.example.l_tehapplication.utils.NewsAdapter
 import com.example.l_tehapplication.R
 import com.example.l_tehapplication.databinding.FragmentHomeBinding
-import com.example.l_tehapplication.ltehApplication
+import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.model.News
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -65,26 +65,26 @@ class HomeFragment : Fragment() {
                     recyclerAdapter.notifyDataSetChanged()
                 }
             }
-            homeViewModel.makeAPICall()
+            homeViewModel.getPosts()
         }
         binding.toolbar.setOnMenuItemClickListener {
             item: MenuItem? ->
             when(item!!.itemId) {
-                R.id.action_update -> homeViewModel.makeAPICall()
+                R.id.action_update -> homeViewModel.getPosts()
             }
             true
         }
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(Runnable {
-            homeViewModel.makeAPICall()
+            homeViewModel.getPosts()
         }, 120, 120, TimeUnit.SECONDS)
     }
 
     private fun initRecycleView() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
-        recyclerAdapter = NewsAdapter(object :NewsActionListener{
+        recyclerAdapter = NewsAdapter(object : NewsActionListener{
             override fun onNewsDetails(news: News) {
-                ltehApplication.NewsDetail = news
+                NewsApplication.NewsDetail = news
                 val controller = findNavController()
                 controller.navigate(R.id.action_navigation_home_to_detailsFragment)
             }

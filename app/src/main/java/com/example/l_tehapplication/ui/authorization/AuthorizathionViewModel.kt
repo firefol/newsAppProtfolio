@@ -1,21 +1,13 @@
 package com.example.l_tehapplication.ui.authorization
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.l_tehapplication.R
-import com.example.l_tehapplication.ltehApplication
-import com.example.l_tehapplication.model.News
+import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.retrofit.RetroServiceInterface
-import com.google.gson.GsonBuilder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AuthorizathionViewModel : ViewModel() {
 
@@ -32,22 +24,22 @@ class AuthorizathionViewModel : ViewModel() {
     }
 
     fun getPhoneMask() {
-        val service = ltehApplication.retrofit.create(RetroServiceInterface::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
+        val service = NewsApplication.retrofit.create(RetroServiceInterface::class.java)
+        viewModelScope.launch {
             val response = service.getPhoneMask()
 
-            withContext(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
                 liveDataPhoneMask.postValue(response.phoneMask.split(" ")[0])
             }
         }
     }
 
     fun Login(params: HashMap<String?, String?>) {
-        val service = ltehApplication.retrofit.create(RetroServiceInterface::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
+        val service = NewsApplication.retrofit.create(RetroServiceInterface::class.java)
+        viewModelScope.launch {
             val response = service.authorizathion(params)
 
-            withContext(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
                 if (response.isSuccessful && response.code() == 200) {
                     liveDataLogin.postValue(response.body()?.success)
                 } else {

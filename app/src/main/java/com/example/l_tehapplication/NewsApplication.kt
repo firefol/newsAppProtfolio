@@ -6,7 +6,7 @@ import com.example.l_tehapplication.utils.Setting
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ltehApplication:Application() {
+class NewsApplication:Application() {
     companion object {
         lateinit var NewsDetail:News
         lateinit var retrofit: Retrofit

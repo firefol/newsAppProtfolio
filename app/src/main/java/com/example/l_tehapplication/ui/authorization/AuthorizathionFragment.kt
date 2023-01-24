@@ -1,35 +1,29 @@
 package com.example.l_tehapplication.ui.authorization
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.l_tehapplication.R
 import com.example.l_tehapplication.databinding.FragmentAuthorizathionBinding
-import com.example.l_tehapplication.databinding.FragmentHomeBinding
-import com.example.l_tehapplication.ltehApplication
-import com.example.l_tehapplication.retrofit.RetroServiceInterface
-import kotlinx.coroutines.*
+import com.example.l_tehapplication.NewsApplication
 
 class AuthorizathionFragment : Fragment() {
 
-    private val settings by lazy { ltehApplication.settings }
+
+    private val settings by lazy { NewsApplication.settings }
     private lateinit var viewModel: AuthorizathionViewModel
     private lateinit var binding: FragmentAuthorizathionBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAuthorizathionBinding.inflate(inflater, container, false)
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return binding.root
@@ -61,8 +55,9 @@ class AuthorizathionFragment : Fragment() {
             params["password"] = binding.editTextTextPassword.text.toString()
             viewModel.Login(params)
         }
-        if (settings.phone == "" && settings.password == "") {
+        if (settings.phone == "" && settings.password == "" && !settings.checkPhoneMask) {
             viewModel.getPhoneMask()
+            settings.checkPhoneMask = true
         }
         else {
             binding.editTextTextPhone.setText(settings.phone)

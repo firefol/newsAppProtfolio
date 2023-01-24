@@ -9,7 +9,7 @@ import retrofit2.http.*
 interface RetroServiceInterface {
 
     @GET("/api/v1/posts")
-    fun getNewsList():Call<List<News>>
+    suspend fun getNewsList(): Response<List<News>>
 
     @GET("/api/v1/phone_masks")
     suspend fun getPhoneMask(): PhoneMaskResponse
