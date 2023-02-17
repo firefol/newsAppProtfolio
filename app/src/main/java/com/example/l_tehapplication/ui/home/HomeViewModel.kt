@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.model.News
+import com.example.l_tehapplication.repository.NetworkRepository
 import com.example.l_tehapplication.retrofit.RetroServiceInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel constructor (private val networkRepository: NetworkRepository) : ViewModel() {
 
     var liveDataList: MutableLiveData<List<News>?> = MutableLiveData()
 
@@ -22,9 +23,8 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getPosts() {
-        val service = NewsApplication.retrofit.create(RetroServiceInterface::class.java)
         viewModelScope.launch {
-            val response = service.getNewsList()
+            val response = networkRepository.getNewsList()
             withContext(Dispatchers.IO) {
                 if (response.isSuccessful && response.code() == 200) {
                     liveDataList.postValue(response.body())

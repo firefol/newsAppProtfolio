@@ -21,6 +21,10 @@ import com.example.l_tehapplication.R
 import com.example.l_tehapplication.databinding.FragmentHomeBinding
 import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.model.News
+import com.example.l_tehapplication.repository.NetworkRepository
+import com.example.l_tehapplication.retrofit.RetroServiceInterface
+import com.example.l_tehapplication.ui.authorization.AuthorizathionViewModel
+import com.example.l_tehapplication.ui.authorization.AuthorizathionViewModelFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -29,7 +33,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var recyclerAdapter: NewsAdapter
-    private lateinit var homeViewModel:HomeViewModel
+    lateinit var homeViewModel:HomeViewModel
 
 
     override fun onCreateView(
@@ -58,7 +62,10 @@ class HomeFragment : Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             spinner.adapter = adapter
-            homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+            val retrofitService = RetroServiceInterface.getInstance()
+            println(retrofitService)
+            val networkRepository = NetworkRepository(retrofitService)
+            homeViewModel = ViewModelProvider(this, HomeViewModelFactory(networkRepository))[HomeViewModel::class.java]
             homeViewModel.getLiveDataObserver().observe(viewLifecycleOwner) {
                 if (it != null) {
                     recyclerAdapter.setNewsList(it)

@@ -3,13 +3,13 @@ package com.example.l_tehapplication.ui.authorization
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.l_tehapplication.NewsApplication
-import com.example.l_tehapplication.retrofit.RetroServiceInterface
+import com.example.l_tehapplication.repository.NetworkRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AuthorizathionViewModel : ViewModel() {
+class AuthorizathionViewModel constructor (private val networkRepository: NetworkRepository) :
+    ViewModel() {
 
 
     var liveDataPhoneMask: MutableLiveData<String?> = MutableLiveData()
@@ -24,20 +24,21 @@ class AuthorizathionViewModel : ViewModel() {
     }
 
     fun getPhoneMask() {
-        val service = NewsApplication.retrofit.create(RetroServiceInterface::class.java)
         viewModelScope.launch {
-            val response = service.getPhoneMask()
-
+            val response = networkRepository.getPhoneMask()
             withContext(Dispatchers.IO) {
-                liveDataPhoneMask.postValue(response.phoneMask.split(" ")[0])
+                if (response.isSuccessful)
+                liveDataPhoneMask.postValue(response.body()?.phoneMask?.split(" ")?.get(0))
+                else {
+                    liveDataPhoneMask.postValue("+7")
+                }
             }
         }
     }
 
     fun Login(params: HashMap<String?, String?>) {
-        val service = NewsApplication.retrofit.create(RetroServiceInterface::class.java)
         viewModelScope.launch {
-            val response = service.authorizathion(params)
+            val response = networkRepository.authorizathion(params)
 
             withContext(Dispatchers.IO) {
                 if (response.isSuccessful && response.code() == 200) {
