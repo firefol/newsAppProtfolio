@@ -1,23 +1,15 @@
 package com.example.l_tehapplication.ui.authorization
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.l_tehapplication.R
-import com.example.l_tehapplication.ltehApplication
-import com.example.l_tehapplication.model.News
-import com.example.l_tehapplication.retrofit.RetroServiceInterface
-import com.google.gson.GsonBuilder
-import kotlinx.coroutines.CoroutineScope
+import com.example.l_tehapplication.repository.NetworkRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class AuthorizathionViewModel : ViewModel() {
+class AuthorizathionViewModel constructor (private val networkRepository: NetworkRepository) :
+    ViewModel() {
 
 
     var liveDataPhoneMask: MutableLiveData<String?> = MutableLiveData()
@@ -32,22 +24,23 @@ class AuthorizathionViewModel : ViewModel() {
     }
 
     fun getPhoneMask() {
-        val service = ltehApplication.retrofit.create(RetroServiceInterface::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getPhoneMask()
-
-            withContext(Dispatchers.Main) {
-                liveDataPhoneMask.postValue(response.phoneMask.split(" ")[0])
+        viewModelScope.launch {
+            val response = networkRepository.getPhoneMask()
+            withContext(Dispatchers.IO) {
+                if (response.isSuccessful)
+                liveDataPhoneMask.postValue(response.body()?.phoneMask?.split(" ")?.get(0))
+                else {
+                    liveDataPhoneMask.postValue("+7")
+                }
             }
         }
     }
 
     fun Login(params: HashMap<String?, String?>) {
-        val service = ltehApplication.retrofit.create(RetroServiceInterface::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = service.authorizathion(params)
+        viewModelScope.launch {
+            val response = networkRepository.authorizathion(params)
 
-            withContext(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
                 if (response.isSuccessful && response.code() == 200) {
                     liveDataLogin.postValue(response.body()?.success)
                 } else {
