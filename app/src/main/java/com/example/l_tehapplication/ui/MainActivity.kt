@@ -1,9 +1,7 @@
-package com.example.l_tehapplication
+package com.example.l_tehapplication.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -12,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.l_tehapplication.R
 import com.example.l_tehapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener{
                 _, destination, _ ->
             if(destination.id == R.id.authorizathionFragment ||
-                destination.id == R.id.detailsFragment) {
+                destination.id == R.id.detailsFragment
+            ) {
                 navView.visibility = GONE
             } else {
                 navView.visibility = VISIBLE
