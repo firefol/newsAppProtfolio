@@ -14,11 +14,13 @@ import com.example.l_tehapplication.databinding.FragmentAuthorizathionBinding
 import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.repository.NetworkRepository
 import com.example.l_tehapplication.retrofit.RetroServiceInterface
+import com.example.l_tehapplication.utils.Setting
 
 class AuthorizathionFragment : Fragment() {
 
 
-    private val settings by lazy { NewsApplication.settings }
+    //private val settings by lazy { NewsApplication.settings }
+    private lateinit var settings:Setting
     lateinit var viewModel: AuthorizathionViewModel
     private lateinit var binding: FragmentAuthorizathionBinding
 
@@ -33,8 +35,8 @@ class AuthorizathionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        settings = Setting(requireContext())
         val retrofitService = RetroServiceInterface.getInstance()
-        println(retrofitService)
         val mainRepository = NetworkRepository(retrofitService)
         viewModel = ViewModelProvider(this, AuthorizathionViewModelFactory(mainRepository))[AuthorizathionViewModel::class.java]
         binding.imageLogo.setImageResource(R.drawable.newsletterbanner)
