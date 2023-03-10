@@ -4,11 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.l_tehapplication.repository.NetworkRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class AuthorizathionViewModel constructor (private val networkRepository: NetworkRepository) :
+@HiltViewModel
+class AuthorizathionViewModel @Inject constructor (private val networkRepository: NetworkRepository) :
     ViewModel() {
 
 

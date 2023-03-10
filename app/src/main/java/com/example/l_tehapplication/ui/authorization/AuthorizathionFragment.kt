@@ -7,6 +7,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.l_tehapplication.R
@@ -15,13 +16,15 @@ import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.repository.NetworkRepository
 import com.example.l_tehapplication.retrofit.RetroServiceInterface
 import com.example.l_tehapplication.utils.Setting
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AuthorizathionFragment : Fragment() {
 
-
-    //private val settings by lazy { NewsApplication.settings }
-    private lateinit var settings:Setting
-    lateinit var viewModel: AuthorizathionViewModel
+    @Inject lateinit var settings:Setting
+    private val viewModel: AuthorizathionViewModel by viewModels()
     private lateinit var binding: FragmentAuthorizathionBinding
 
     override fun onCreateView(
@@ -36,9 +39,7 @@ class AuthorizathionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         settings = Setting(requireContext())
-        val retrofitService = RetroServiceInterface.getInstance()
-        val mainRepository = NetworkRepository(retrofitService)
-        viewModel = ViewModelProvider(this, AuthorizathionViewModelFactory(mainRepository))[AuthorizathionViewModel::class.java]
+        //viewModel = ViewModelProvider(this, AuthorizathionViewModelFactory(mainRepository))[AuthorizathionViewModel::class.java]
         binding.imageLogo.setImageResource(R.drawable.newsletterbanner)
         val controller = findNavController()
         viewModel.getLiveDataObserver().observe(viewLifecycleOwner){

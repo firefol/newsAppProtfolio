@@ -2,9 +2,11 @@ package com.example.l_tehapplication.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlin.reflect.KProperty
 
-class Setting(context: Context) {
+class Setting @Inject constructor(@ApplicationContext context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(this.javaClass.simpleName, Context.MODE_PRIVATE)
 

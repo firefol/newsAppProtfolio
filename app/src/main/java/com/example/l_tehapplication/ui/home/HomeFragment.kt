@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,15 +28,18 @@ import com.example.l_tehapplication.retrofit.RetroServiceInterface
 import com.example.l_tehapplication.ui.authorization.AuthorizathionViewModel
 import com.example.l_tehapplication.ui.authorization.AuthorizathionViewModelFactory
 import com.example.l_tehapplication.ui.details.DetailsViewModel
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var recyclerAdapter: NewsAdapter
-    lateinit var homeViewModel:HomeViewModel
+    private val homeViewModel:HomeViewModel by viewModels()
     private val detailsViewModel: DetailsViewModel by activityViewModels()
 
 
@@ -65,10 +69,6 @@ class HomeFragment : Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
             spinner.adapter = adapter
-            val retrofitService = RetroServiceInterface.getInstance()
-            println(retrofitService)
-            val networkRepository = NetworkRepository(retrofitService)
-            homeViewModel = ViewModelProvider(this, HomeViewModelFactory(networkRepository))[HomeViewModel::class.java]
             homeViewModel.getLiveDataObserver().observe(viewLifecycleOwner) {
                 if (it != null) {
                     recyclerAdapter.setNewsList(it)

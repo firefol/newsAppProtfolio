@@ -2,9 +2,11 @@ package com.example.l_tehapplication.repository
 
 import com.example.l_tehapplication.retrofit.RetroServiceInterface
 import retrofit2.http.FieldMap
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class NetworkRepository(private val retrofitService: RetroServiceInterface) {
+@Singleton
+class NetworkRepository @Inject constructor(private val retrofitService: RetroServiceInterface) {
 
     suspend fun getNewsList() = retrofitService.getNewsList()
 

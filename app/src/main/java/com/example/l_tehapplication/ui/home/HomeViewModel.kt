@@ -7,14 +7,17 @@ import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.model.News
 import com.example.l_tehapplication.repository.NetworkRepository
 import com.example.l_tehapplication.retrofit.RetroServiceInterface
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class HomeViewModel constructor (private val networkRepository: NetworkRepository) : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor (private val networkRepository: NetworkRepository) : ViewModel() {
 
     var liveDataList: MutableLiveData<List<News>?> = MutableLiveData()
 

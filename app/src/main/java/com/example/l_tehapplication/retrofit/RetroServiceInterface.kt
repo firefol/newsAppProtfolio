@@ -20,18 +20,4 @@ interface RetroServiceInterface {
     @POST("/api/v1/auth")
     suspend fun authorizathion(@FieldMap params: HashMap<String?, String?>): Response<LoginResponse>
 
-    companion object {
-        var retrofitService: RetroServiceInterface? = null
-        fun getInstance() : RetroServiceInterface {
-            if (retrofitService == null) {
-                val retrofit = Retrofit.Builder()
-                    .baseUrl("http://dev-exam.l-tech.ru")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                retrofitService = retrofit.create(RetroServiceInterface::class.java)
-            }
-            return retrofitService!!
-        }
-
-    }
 }
