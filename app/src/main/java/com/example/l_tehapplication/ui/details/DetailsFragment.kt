@@ -13,7 +13,9 @@ import com.bumptech.glide.Glide
 import com.example.l_tehapplication.databinding.FragmentDetailsBinding
 import com.example.l_tehapplication.NewsApplication
 import com.example.l_tehapplication.model.News
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     lateinit var binding: FragmentDetailsBinding

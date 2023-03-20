@@ -4,9 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.l_tehapplication.model.News
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class DetailsViewModel() : ViewModel() {
+@HiltViewModel
+class DetailsViewModel @Inject constructor() : ViewModel() {
 
     val newsLiveData: MutableLiveData<News> by lazy {
              MutableLiveData<News>()

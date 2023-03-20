@@ -33,7 +33,7 @@ class AuthorizathionViewModel @Inject constructor (private val networkRepository
                 if (response.isSuccessful)
                 liveDataPhoneMask.postValue(response.body()?.phoneMask?.split(" ")?.get(0))
                 else {
-                    liveDataPhoneMask.postValue("+7")
+                    liveDataPhoneMask.postValue("-")
                 }
             }
         }
